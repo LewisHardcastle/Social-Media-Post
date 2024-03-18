@@ -1,0 +1,146 @@
+.body {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333333;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.post-container {
+  display: flex;
+
+  height: 1000px;
+  width: 1200px;
+  background-color: #191919;
+  border-radius: 20px;
+}
+
+.post-img {
+  height: 1000px;
+  width: 800px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.data-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  height: 100%;
+}
+
+.post-upper-container {
+  height: fit-content;
+}
+
+.comment-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  height: 713px;
+}
+
+.user-profile {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  border: solid 1px red;
+  width: 400px;
+  height: 80px;
+}
+
+.profile-pic {
+  height: 40px;
+  width: 40px;
+  border-radius: 100px;
+}
+
+.user-profile-text {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 40px;
+}
+
+.user-profile-text p {
+  margin-top: 0;
+  margin-left: 10px;
+  margin-bottom: 4px;
+}
+
+.user-profile-text p:nth-child(2) {
+  color: #adadad;
+}
+
+.user-caption {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  border: solid 1px pink;
+  width: 400px;
+  height: fit-content;
+}
+
+.user-caption-text {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+  margin-top: 0;
+  margin-left: 10px;
+  margin-bottom: 4px;
+}
+
+.comment-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.comment {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  border: solid 1px blue;
+  width: 400px;
+  height: fit-content;
+}
+
+.comment-text {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+  margin-top: 0;
+  margin-left: 10px;
+  margin-bottom: 4px;
+}
+
+.lower-container {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.post-data {
+  border: solid 1px yellow;
+  width: 400px;
+  height: 100px;
+}
+
+.add-comment {
+  border: solid 1px purple;
+  width: 400px;
+  height: 50px;
+}
