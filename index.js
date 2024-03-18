@@ -11,6 +11,13 @@ const postImage = grabEl('.post-img');
 const userProfilePic = grabEl('.profile-pic');
 const userName = grabEl('.username');
 const userLocation = grabEl('.user-location');
+const commentContainer = grabEl('.comment-container');
+const commentList = grabEl('.comment-list');
+const commentListItem = grabEl('.comment-list-item');
+
+const commentListArr = [
+  '<img class="profile-pic" src="./profile-pic.jpg"/><div class="comment-text"><p>Username + comment</p></div>',
+];
 
 function grabEl(selector) {
   return document.querySelector(selector);
@@ -83,6 +90,14 @@ function generatePost() {
   return postObj;
 }
 
+function newCommentElement() {
+  const newLi = document.createElement('li');
+  newLi.className = 'comment-list-item';
+  newLi.innerHTML = `${commentListArr[0]}`;
+  commentContainer.appendChild(newLi);
+  console.log(newLi.innerHTML);
+}
+
 function displayUser() {
   const postObj = generatePost();
   userName.innerText = postObj.userName;
@@ -93,4 +108,9 @@ function displayUser() {
 
 window.addEventListener('load', function () {
   displayUser();
+});
+
+window.addEventListener('click', function () {
+  console.log('clicked');
+  newCommentElement();
 });
