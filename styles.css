@@ -45,6 +45,11 @@
   align-items: flex-start;
   flex-direction: column;
   height: 713px;
+
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-width: none;
+  scrollbar-color: #191919 #333333;
 }
 
 .user-profile {
@@ -52,7 +57,7 @@
   justify-content: flex-start;
   align-items: center;
 
-  border: solid 1px red;
+  /* border: solid 1px red; */
   width: 400px;
   height: 80px;
 }
@@ -81,12 +86,18 @@
   color: #adadad;
 }
 
+.caption-profile-pic {
+  height: 40px;
+  width: 40px;
+  border-radius: 100px;
+}
+
 .user-caption {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 
-  border: solid 1px pink;
+  /* border: solid 1px pink; */
   width: 400px;
   height: fit-content;
 }
@@ -113,7 +124,7 @@
 
   list-style: none;
 
-  border: solid 1px blue;
+  /* border: solid 1px blue; */
   width: 400px;
   height: fit-content;
 }
@@ -126,6 +137,11 @@
   margin-top: 0;
   margin-left: 10px;
   margin-bottom: 4px;
+}
+
+.text-not-bold {
+  font-weight: 400;
+  color: #e2e2e2;
 }
 
 .lower-container {
