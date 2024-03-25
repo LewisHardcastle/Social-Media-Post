@@ -81,8 +81,8 @@ function populateRepliesListArr() {
 
 function newCommentElement() {
   // Math.floor(Math.random() * 20)
-  const numberOfComments = Math.floor(Math.random() * 100);
-  const numberOfReplies = Math.floor(Math.random() * 20);
+  const numberOfComments = Math.floor(Math.random() * 10);
+  const numberOfReplies = Math.floor(Math.random() * 2);
 
   for (let i = 0; i <= numberOfComments; i++) {
     const commentListArr = populateCommentListArr();
@@ -114,6 +114,30 @@ function newCommentElement() {
     }
     newLi.appendChild(newReplyUl);
   }
+
+  // TODO: Make this event listener work for all reply buttons, not just the first.
+  const replyButtonEl = grabEl('.reply-button');
+
+  replyButtonEl.addEventListener('click', function (e) {
+    console.log('click');
+
+    const replyButtonId = replyButtonEl.id;
+    const releventRepliesList = document.querySelectorAll(
+      `.reply-list-number-${replyButtonId}`
+    );
+
+    if (e.target.innerText === 'Hide replies') {
+      releventRepliesList.forEach(i => {
+        i.style.display = 'none';
+      });
+      e.target.innerText = 'Show replies';
+    } else if (e.target.innerText === 'Show replies') {
+      releventRepliesList.forEach(i => {
+        i.style.display = 'flex';
+      });
+      e.target.innerText = 'Hide replies';
+    }
+  });
 }
 
 function displayPost() {
@@ -133,10 +157,6 @@ window.addEventListener('load', function () {
   displayPost();
   newCommentElement();
 });
-
-// replyButton.addEventListener('click', function () {
-//   console.log('click');
-// });
 
 // window.addEventListener('click', function () {
 //   console.log('clicked');
