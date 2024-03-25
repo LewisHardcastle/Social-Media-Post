@@ -16,6 +16,8 @@ const userLocation = grabEl('.user-location');
 const commentContainer = grabEl('.comment-container');
 const commentList = grabEl('.comment-list');
 const commentListItem = grabEl('.comment-list-item');
+// const replyButton = grabEl('.reply-button');
+// const repliesList = grabEl('.replies-list');
 
 function grabEl(selector) {
   return document.querySelector(selector);
@@ -25,40 +27,12 @@ function generatePerson() {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
 
-  const displayName = faker.internet.displayName({
-    firstName: `${firstName}`,
-    lastName: `${lastName}`,
-  });
-
   const userName = faker.internet.userName({
     firstName: `${firstName}`,
     lastName: `${lastName}`,
   });
 
-  return { displayName, userName };
-}
-
-// function generateText() {
-//   const text = faker.word.words({ count: { min: 1, max: 80 } });
-//   return text;
-// }
-
-function trueOrFalse() {
-  const value = Math.round(Math.random() * 2);
-  if (value === 0) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-function generatePicture() {
-  const picOrNoPic = trueOrFalse();
-  if (picOrNoPic) {
-    return faker.image.url();
-  } else {
-    return null;
-  }
+  return { userName };
 }
 
 function likesGenerator() {
@@ -72,7 +46,7 @@ function getCurrentDate() {
 }
 
 function generatePost() {
-  const { displayName, userName } = generatePerson();
+  const { userName } = generatePerson();
 
   const postObj = {
     userName,
@@ -89,40 +63,66 @@ function generatePost() {
   return postObj;
 }
 
-// const commentListArr = [
-//   '<img class="profile-pic" src="./profile-pic.jpg"/><div class="comment-text"><p>Username + comment</p></div>',
-// ];
-
 function populateCommentListArr() {
   const userObj = generatePost();
-
   const commentListArr = [
-    `<img class="profile-pic" src="${userObj.profilePic}"/><div class="comment-text"><p>${userObj.userName} <span class='text-not-bold'>${userObj.text}</span></p></div>`,
+    `<div class="comment"><img class="profile-pic" src="${userObj.profilePic}"/><div class="comment-text"><p>${userObj.userName} <span class='text-not-bold'>${userObj.text}</span></p></div></div>`,
   ];
-
   return commentListArr;
+}
+
+function populateRepliesListArr() {
+  const replyUserObj = generatePost();
+  const repliesListArr = [
+    `<img class="profile-pic" src="${replyUserObj.profilePic}"/><div class="replies-text"><p>${replyUserObj.userName} <span class="text-not-bold">${replyUserObj.text}</span></p></div>`,
+  ];
+  return repliesListArr;
 }
 
 function newCommentElement() {
   // Math.floor(Math.random() * 20)
-  const numberOfComments = 1;
+  const numberOfComments = Math.floor(Math.random() * 100);
+  const numberOfReplies = Math.floor(Math.random() * 20);
 
   for (let i = 0; i <= numberOfComments; i++) {
     const commentListArr = populateCommentListArr();
-
     const newLi = document.createElement('li');
+    const newReplyUl = document.createElement('ul');
+    const replyButton = document.createElement('p');
+
     newLi.className = 'comment-list-item';
     newLi.innerHTML = `${commentListArr[0]}`;
-    commentContainer.appendChild(newLi);
-    console.log(newLi.innerHTML);
+    newReplyUl.className = 'replies-list';
+    newLi.setAttribute('id', `${i}`);
+    replyButton.className = 'reply-button';
+    replyButton.innerText = 'Show replies';
+    replyButton.setAttribute('id', `${i}`);
+
+    commentList.appendChild(newLi);
+
+    for (let x = 0; x <= numberOfReplies; x++) {
+      const repliesListArr = populateRepliesListArr();
+      const newReplyLi = document.createElement('li');
+
+      newReplyLi.className = 'replies-list-item';
+      newReplyLi.classList.add(`reply-list-number-${i}`);
+      newReplyLi.setAttribute('id', `${x}`);
+      newReplyLi.innerHTML = `${repliesListArr[0]}`;
+
+      newReplyUl.appendChild(newReplyLi);
+      newReplyUl.insertBefore(replyButton, newReplyUl.firstChild);
+    }
+    newLi.appendChild(newReplyUl);
   }
 }
 
-function displayUser() {
+function displayPost() {
   const postObj = generatePost();
+
+  postImage.src = postObj.postImage;
+
   userName.innerText = postObj.userName;
   userLocation.innerText = postObj.location;
-  postImage.src = postObj.postImage;
   userProfilePic.src = postObj.profilePic;
 
   captionProfilePic.src = postObj.profilePic;
@@ -130,9 +130,13 @@ function displayUser() {
 }
 
 window.addEventListener('load', function () {
-  displayUser();
+  displayPost();
   newCommentElement();
 });
+
+// replyButton.addEventListener('click', function () {
+//   console.log('click');
+// });
 
 // window.addEventListener('click', function () {
 //   console.log('clicked');
