@@ -16,6 +16,9 @@ const userLocation = grabEl('.user-location');
 const commentContainer = grabEl('.comment-container');
 const commentList = grabEl('.comment-list');
 const commentListItem = grabEl('.comment-list-item');
+const heartIcon =
+  '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 comment-like-button"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>';
+
 // const replyButton = grabEl('.reply-button');
 // const repliesList = grabEl('.replies-list');
 
@@ -52,7 +55,7 @@ function generatePost() {
     userName,
     location: faker.location.city(),
     profilePic: faker.image.avatarGitHub(),
-    text: faker.word.words({ count: { min: 1, max: 20 } }),
+    text: faker.word.words({ count: { min: 1, max: 10 } }),
     postImage: faker.image.urlLoremFlickr({
       width: 800,
       height: 1000,
@@ -66,7 +69,8 @@ function generatePost() {
 function populateCommentListArr() {
   const userObj = generatePost();
   const commentListArr = [
-    `<div class="comment"><img class="profile-pic" src="${userObj.profilePic}"/><div class="comment-text"><p>${userObj.userName} <span class='text-not-bold'>${userObj.text}</span></p></div></div>`,
+    `<div class="comment"><img class="profile-pic" src="${userObj.profilePic}"/><div class="comment-text"><p>${userObj.userName} <span class='text-not-bold'>${userObj.text}</span></p>
+    <div class="comment-like-button-container">${heartIcon}</div></div></div>`,
   ];
   return commentListArr;
 }
@@ -115,28 +119,29 @@ function newCommentElement() {
     newLi.appendChild(newReplyUl);
   }
 
-  // TODO: Make this event listener work for all reply buttons, not just the first.
-  const replyButtonEl = grabEl('.reply-button');
+  window.addEventListener('click', function (e) {
+    const allReplyButtons = document.querySelectorAll('.reply-button');
 
-  replyButtonEl.addEventListener('click', function (e) {
-    console.log('click');
-
-    const replyButtonId = replyButtonEl.id;
-    const releventRepliesList = document.querySelectorAll(
-      `.reply-list-number-${replyButtonId}`
-    );
-
-    if (e.target.innerText === 'Hide replies') {
-      releventRepliesList.forEach(i => {
-        i.style.display = 'none';
-      });
-      e.target.innerText = 'Show replies';
-    } else if (e.target.innerText === 'Show replies') {
-      releventRepliesList.forEach(i => {
-        i.style.display = 'flex';
-      });
-      e.target.innerText = 'Hide replies';
-    }
+    allReplyButtons.forEach(i => {
+      if (i.id === e.target.id) {
+        const releventRepliesList = document.querySelectorAll(
+          `.reply-list-number-${e.target.id}`
+        );
+        if (e.target.innerText === 'Hide replies') {
+          releventRepliesList.forEach(i => {
+            i.style.display = 'none';
+          });
+          e.target.innerText = 'Show replies';
+        } else if (e.target.innerText === 'Show replies') {
+          releventRepliesList.forEach(i => {
+            i.style.display = 'flex';
+          });
+          e.target.innerText = 'Hide replies';
+        }
+      } else {
+        return null;
+      }
+    });
   });
 }
 
@@ -157,8 +162,3 @@ window.addEventListener('load', function () {
   displayPost();
   newCommentElement();
 });
-
-// window.addEventListener('click', function () {
-//   console.log('clicked');
-//   newCommentElement();
-// });
