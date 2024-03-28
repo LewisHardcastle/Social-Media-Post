@@ -32,11 +32,14 @@
   justify-content: space-between;
   flex-direction: column;
 
+  padding-left: 10px;
+
   height: 100%;
 }
 
 .post-upper-container {
   height: fit-content;
+  width: 380px;
 }
 
 .comment-container {
@@ -45,6 +48,7 @@
   align-items: flex-start;
   flex-direction: column;
   height: 713px;
+  width: 380px;
 
   overflow-y: scroll;
   scrollbar-width: thin;
@@ -58,7 +62,7 @@
   align-items: center;
 
   /* border: solid 1px red; */
-  width: 400px;
+  width: fit-content;
   height: 80px;
 }
 
@@ -98,7 +102,7 @@
   align-items: center;
 
   /* border: solid 1px pink; */
-  width: 400px;
+  width: fit-content;
   height: fit-content;
 }
 
@@ -113,6 +117,7 @@
 }
 
 .comment-list {
+  width: 380px;
   padding: 0;
   margin: 0;
 }
@@ -126,7 +131,7 @@
   list-style: none;
 
   /* border: solid 1px blue; */
-  width: 400px;
+  width: fit-content;
   height: fit-content;
 }
 
@@ -159,7 +164,7 @@
   list-style: none;
 
   /* border: solid 1px blue; */
-  width: 400px;
+  width: 380px;
   height: fit-content;
 }
 
@@ -178,12 +183,24 @@
 
 .comment-text {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+
+  width: 100%;
 
   gap: 10px;
   margin-top: 0;
   margin-left: 10px;
   margin-bottom: 4px;
+}
+
+.comment-like-button {
+  fill: #191919;
+
+  margin-top: 14px;
+  /* margin-right: 14px; */
+  height: 20px;
+  width: 20px;
 }
 
 .replies-text {
@@ -208,13 +225,70 @@
 }
 
 .post-data {
-  border: solid 1px yellow;
-  width: 400px;
-  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+
+  border-top: solid rgb(85, 85, 85) 1px;
+  width: 380px;
+  height: 50px;
+}
+
+.post-data svg {
+  padding-top: 10px;
+  height: 30px;
+  width: 30px;
+}
+
+.number-of-likes {
+  margin-top: 0;
+  margin-bottom: 2px;
+}
+
+.date-of-post {
+  margin-top: 0;
 }
 
 .add-comment {
-  border: solid 1px purple;
-  width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+
+  border-top: solid rgb(85, 85, 85) 1px;
+  width: 380px;
   height: 50px;
+}
+
+.add-comment svg {
+  height: 30px;
+  width: 30px;
+
+  color: #adadad;
+}
+
+.add-comment input {
+  height: 50%;
+  width: 70%;
+  border-radius: 10px;
+  border: none;
+  background-color: #535353;
+  color: white;
+  font-family: roboto;
+}
+
+.comment-input:focus {
+  outline: 2px solid #00bfff; /* Combines color, style, and width */
+}
+
+.add-comment p {
+  color: #00bfff;
+}
+
+.add-comment p {
+  padding-right: 10px;
+}
+
+.date-of-post {
+  color: #adadad;
 }

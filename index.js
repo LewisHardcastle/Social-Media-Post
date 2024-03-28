@@ -1,26 +1,16 @@
 import { faker } from 'https://esm.sh/@faker-js/faker';
 
-// User profile, pic, display name, follow button
-// User caption
-// commenter profile
-// commenter comment, date, of comment, replies, like button
-// post stats, likes, date, like button, comment button, dm button, bookmark button
-// comment form, emoji button, post button
-
 const postImage = grabEl('.post-img');
 const userProfilePic = grabEl('.profile-pic');
 const captionProfilePic = grabEl('.caption-profile-pic');
 const captionText = grabEl('.user-caption-text');
 const userName = grabEl('.username');
 const userLocation = grabEl('.user-location');
-const commentContainer = grabEl('.comment-container');
 const commentList = grabEl('.comment-list');
-const commentListItem = grabEl('.comment-list-item');
 const heartIcon =
-  '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 comment-like-button"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>';
-
-// const replyButton = grabEl('.reply-button');
-// const repliesList = grabEl('.replies-list');
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="comment-like-button"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>';
+const dateOfPost = grabEl('.date-of-post');
+const numberOfLikes = grabEl('.number-of-likes');
 
 function grabEl(selector) {
   return document.querySelector(selector);
@@ -43,9 +33,34 @@ function likesGenerator() {
   return likes;
 }
 
-function getCurrentDate() {
-  const date = new Date();
-  return date;
+function getRandomDate() {
+  const currentDate = new Date();
+  // Generate a random past date within the last year
+  const pastDate = new Date(
+    currentDate.getFullYear() - 1,
+    Math.floor(Math.random() * 12),
+    Math.floor(Math.random() * 28) + 1
+  );
+
+  // Calculate the time difference
+  const timeDiff = currentDate.getTime() - pastDate.getTime();
+  // Calculate the difference in days
+  const daysDiff = timeDiff / (1000 * 3600 * 24);
+
+  if (daysDiff < 7) {
+    // If the difference is less than 7 days, return in 'Xd' format
+    return `${Math.floor(daysDiff)}d`;
+  } else if (daysDiff < 28) {
+    // If the difference is less than 28 days, return in 'Xw' format
+    return `${Math.floor(daysDiff / 7)}w`;
+  } else {
+    // If the difference is 4 weeks or more, return the formatted date
+    return pastDate.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
 }
 
 function generatePost() {
@@ -60,7 +75,7 @@ function generatePost() {
       width: 800,
       height: 1000,
     }),
-    date: getCurrentDate(),
+    date: getRandomDate(),
     likes: likesGenerator(),
   };
   return postObj;
@@ -70,7 +85,7 @@ function populateCommentListArr() {
   const userObj = generatePost();
   const commentListArr = [
     `<div class="comment"><img class="profile-pic" src="${userObj.profilePic}"/><div class="comment-text"><p>${userObj.userName} <span class='text-not-bold'>${userObj.text}</span></p>
-    <div class="comment-like-button-container">${heartIcon}</div></div></div>`,
+  </div></div>`,
   ];
   return commentListArr;
 }
@@ -85,8 +100,11 @@ function populateRepliesListArr() {
 
 function newCommentElement() {
   // Math.floor(Math.random() * 20)
-  const numberOfComments = Math.floor(Math.random() * 10);
-  const numberOfReplies = Math.floor(Math.random() * 2);
+
+  // TODO: Make number of replies random for each comment, same at the moment.
+
+  const numberOfComments = Math.floor(Math.random() * 40);
+  const numberOfReplies = Math.floor(Math.random() * 10);
 
   for (let i = 0; i <= numberOfComments; i++) {
     const commentListArr = populateCommentListArr();
@@ -99,7 +117,7 @@ function newCommentElement() {
     newReplyUl.className = 'replies-list';
     newLi.setAttribute('id', `${i}`);
     replyButton.className = 'reply-button';
-    replyButton.innerText = 'Show replies';
+    replyButton.innerText = `Show replies (${numberOfReplies + 1})`;
     replyButton.setAttribute('id', `${i}`);
 
     commentList.appendChild(newLi);
@@ -119,6 +137,29 @@ function newCommentElement() {
     newLi.appendChild(newReplyUl);
   }
 
+  let commentText = document.querySelectorAll('.comment-text');
+
+  function displayCommentLikeButton(commentArr) {
+    commentArr.forEach(i => {
+      const commentLikeButtonContainer = document.createElement('div');
+      commentLikeButtonContainer.className = 'comment-like-button-container';
+      commentLikeButtonContainer.innerHTML = `${heartIcon}`;
+      i.appendChild(commentLikeButtonContainer);
+
+      const svgElement = commentLikeButtonContainer.querySelector('svg');
+
+      svgElement.addEventListener('click', function (e) {
+        const currentFill = e.target.getAttribute('fill');
+        e.target.setAttribute(
+          'fill',
+          currentFill === '#191919' ? '#ffffff' : '#191919'
+        );
+      });
+    });
+  }
+
+  displayCommentLikeButton(commentText);
+
   window.addEventListener('click', function (e) {
     const allReplyButtons = document.querySelectorAll('.reply-button');
 
@@ -131,8 +172,10 @@ function newCommentElement() {
           releventRepliesList.forEach(i => {
             i.style.display = 'none';
           });
-          e.target.innerText = 'Show replies';
-        } else if (e.target.innerText === 'Show replies') {
+          e.target.innerText = `Show replies (${numberOfReplies + 1})`;
+        } else if (
+          e.target.innerText === `Show replies (${numberOfReplies + 1})`
+        ) {
           releventRepliesList.forEach(i => {
             i.style.display = 'flex';
           });
@@ -156,6 +199,9 @@ function displayPost() {
 
   captionProfilePic.src = postObj.profilePic;
   captionText.innerHTML = `<p class='caption-text'>${postObj.userName} <span class='text-not-bold'>${postObj.text}</span></p>`;
+
+  numberOfLikes.innerText = `${postObj.likes} likes`;
+  dateOfPost.innerText = postObj.date;
 }
 
 window.addEventListener('load', function () {
