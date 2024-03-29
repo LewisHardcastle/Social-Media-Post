@@ -67,8 +67,6 @@ function generatePost() {
   const { userName } = generatePerson();
 
   const postObj = {
-    userName,
-    location: faker.location.city(),
     profilePic: faker.image.avatarGitHub(),
     text: faker.word.words({ count: { min: 1, max: 10 } }),
     postImage: faker.image.urlLoremFlickr({
