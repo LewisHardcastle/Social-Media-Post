@@ -33,28 +33,22 @@ function likesGenerator() {
   return likes;
 }
 
-function getRandomDate() {
+function randomDateGenerator() {
   const currentDate = new Date();
-  // Generate a random past date within the last year
+
   const pastDate = new Date(
     currentDate.getFullYear() - 1,
     Math.floor(Math.random() * 12),
     Math.floor(Math.random() * 28) + 1
   );
-
-  // Calculate the time difference
   const timeDiff = currentDate.getTime() - pastDate.getTime();
-  // Calculate the difference in days
   const daysDiff = timeDiff / (1000 * 3600 * 24);
 
   if (daysDiff < 7) {
-    // If the difference is less than 7 days, return in 'Xd' format
     return `${Math.floor(daysDiff)}d`;
   } else if (daysDiff < 28) {
-    // If the difference is less than 28 days, return in 'Xw' format
     return `${Math.floor(daysDiff / 7)}w`;
   } else {
-    // If the difference is 4 weeks or more, return the formatted date
     return pastDate.toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'long',
@@ -67,13 +61,15 @@ function generatePost() {
   const { userName } = generatePerson();
 
   const postObj = {
+    userName,
+    location: faker.location.city(),
     profilePic: faker.image.avatarGitHub(),
     text: faker.word.words({ count: { min: 1, max: 10 } }),
     postImage: faker.image.urlLoremFlickr({
       width: 800,
       height: 1000,
     }),
-    date: getRandomDate(),
+    date: randomDateGenerator(),
     likes: likesGenerator(),
   };
   return postObj;
